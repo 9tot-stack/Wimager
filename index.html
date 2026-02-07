@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wimager</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <main class="page">
+
+    <!-- UPLOADER SCREEN -->
+    <section id="uploaderScreen" class="hero">
+      <h1>Wimager</h1>
+      <p class="subtitle">Increase resolution with better resize + sharpening + contrast (client-side).</p>
+
+      <div id="dropArea" class="dropArea" tabindex="0" role="button" aria-label="Select image or drop here">
+        <input id="fileInput" type="file" accept="image/*" />
+        <div class="selectRow">
+          <button id="selectBtn" class="selectBtn" type="button">Select image</button>
+        </div>
+        <div class="dropHint">or drop image here</div>
+      </div>
+    </section>
+
+    <!-- EDITOR SCREEN -->
+    <section id="editor" class="editor hidden">
+      <div class="editor-inner">
+
+        <!-- LEFT: Preview (BIGGER) -->
+        <div class="card previewCard">
+          <div class="cardTitle">Preview</div>
+
+          <div class="previewGrid">
+            <div class="previewBox bigPreviewBox">
+              <div class="previewLabel">Original</div>
+              <img id="previewOrig" alt="Original preview" />
+              <div id="origEmpty" class="previewEmpty">No image yet</div>
+            </div>
+
+            <div class="previewBox bigPreviewBox">
+              <div class="previewLabel">Result (live preview)</div>
+              <canvas id="canvas"></canvas>
+              <div id="resEmpty" class="previewEmpty">Move the slider to preview</div>
+              <div id="liveBadge" class="liveBadge hidden">LIVE PREVIEW</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Options -->
+        <div class="card">
+          <div class="cardTitle">Upscale options</div>
+
+          <!-- Multiplier slider -->
+          <div class="block">
+            <div class="blockTitle">Size multiplier</div>
+            <div class="sliderRow">
+              <input id="multSlider" type="range" min="1" max="8" step="0.1" value="2" />
+              <div class="sliderValue"><span id="multVal">2.0</span>×</div>
+            </div>
+            <div class="blockHint">Live preview is capped for speed. Export creates full resolution.</div>
+          </div>
+
+          <div class="row">
+            <label class="lbl">Mode</label>
+            <select id="preset" class="select">
+              <option value="multiplier">Use multiplier</option>
+              <option value="original">Original</option>
+              <option value="longedge-1920">Long edge 1920</option>
+              <option value="longedge-1280">Long edge 1280</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+
+          <div class="row grid2">
+            <div>
+              <label class="lbl small">Width</label>
+              <input id="w" class="input" type="number" min="1" step="1" />
+            </div>
+            <div>
+              <label class="lbl small">Height</label>
+              <input id="h" class="input" type="number" min="1" step="1" />
+            </div>
+          </div>
+
+          <label class="check">
+            <input id="lockAR" type="checkbox" checked />
+            <span>Lock aspect ratio</span>
+          </label>
+
+          <!-- Resize algorithm -->
+          <div class="block">
+            <div class="blockTitle">Resize algorithm</div>
+            <select id="resizeAlg" class="select">
+              <option value="progressive">Progressive (fast, good)</option>
+              <option value="lanczos3">Lanczos-3 (sharper, slower)</option>
+            </select>
+            <div class="blockHint">Lanczos gives more detail but is slower (pure JS).</div>
+          </div>
+
+          <!-- Sharpen -->
+          <div class="block">
+            <div class="blockTitle">Sharpen</div>
+
+            <label class="check">
+              <input id="sharpenOn" type="checkbox" checked />
+              <span>Enable sharpening</span>
+            </label>
+
+            <div class="row" style="margin-top:10px;">
+              <label class="lbl">Type</label>
+              <select id="sharpenType" class="select">
+                <option value="unsharp">Unsharp mask (classic)</option>
+                <option value="edgeAware">Edge-aware (less halos)</option>
+              </select>
+            </div>
+
+            <div class="sliderRow">
+              <input id="sharpenAmt" type="range" min="0" max="1" step="0.05" value="0.35" />
+              <div class="sliderValue"><span id="sharpenVal">0.35</span></div>
+            </div>
+
+            <div class="blockHint">Edge-aware reduces halos by limiting sharpening on strong edges and flat regions.</div>
+          </div>
+
+          <!-- Contrast -->
+          <div class="block">
+            <div class="blockTitle">Contrast</div>
+
+            <label class="check">
+              <input id="contrastOn" type="checkbox" checked />
+              <span>Enable contrast boost</span>
+            </label>
+
+            <div class="sliderRow" style="margin-top:10px;">
+              <input id="contrastAmt" type="range" min="0.6" max="1.6" step="0.05" value="1.15" />
+              <div class="sliderValue"><span id="contrastVal">1.15</span>×</div>
+            </div>
+
+            <div class="blockHint">Contrast formula: (pixel − 128) × amount + 128</div>
+          </div>
+
+          <div class="row">
+            <label class="lbl">Format</label>
+            <select id="format" class="select">
+              <option value="image/png">PNG</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/webp">WEBP</option>
+            </select>
+          </div>
+
+          <div id="qualityRow" class="row">
+            <label class="lbl">Quality</label>
+            <div class="qwrap">
+              <input id="quality" type="range" min="0.1" max="1" step="0.05" value="0.9" />
+              <span id="qVal" class="qVal">0.90</span>
+            </div>
+          </div>
+
+          <button id="btnExport" class="actionBtn" type="button">Upscale / Export (Full Size)</button>
+
+          <div class="meta">
+            <div><span>File:</span> <b id="fileName">—</b></div>
+            <div><span>Original:</span> <b id="origDim">—</b></div>
+            <div><span>Target:</span> <b id="outDim">—</b></div>
+          </div>
+
+          <div class="actions">
+            <a id="btnDownload" class="downloadBtn disabled" href="#" download>Download</a>
+            <button id="btnBack" class="ghostBtn" type="button">Back</button>
+            <button id="btnClear" class="ghostBtn" type="button">Clear</button>
+          </div>
+
+          <div class="note">
+            Tip: For text/docs, try Lanczos + Edge-aware + moderate contrast.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="footer">Wimager — client-side only. No uploads.</footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

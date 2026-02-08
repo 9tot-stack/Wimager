@@ -5,7 +5,7 @@ Wimager is a lightweight, fully client-side image upscaler built with **HTML + C
 It lets you upload an image, choose a scaling multiplier, preview changes instantly, and export the upscaled result — all in the browser (no server upload).
 
 ## Live Demo
-- Netlify: https://wimager.netlify.app/
+https://wimager.netlify.app/
 
 ## Features
 - ✅ Drag & drop / file upload

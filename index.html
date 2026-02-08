@@ -3,7 +3,26 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Wimager</title>
+
+  <title>Wimager — Image Upscaler (Lanczos-3, Sharpen, Contrast)</title>
+
+  <!-- SEO basics -->
+  <meta name="description" content="Wimager is a free browser-based image upscaler using Lanczos-3 resampling, edge-aware sharpening, and contrast enhancement. Client-side only — no uploads." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://papaya-babka-32636a.netlify.app/" />
+
+  <!-- Open Graph (social previews) -->
+  <meta property="og:title" content="Wimager — Image Upscaler" />
+  <meta property="og:description" content="Upscale images in your browser with Lanczos-3, edge-aware sharpening, and contrast boost. No uploads." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://papaya-babka-32636a.netlify.app/" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Google Search Console verification (paste your code here AFTER you get it) -->
+  <!-- <meta name="google-site-verification" content="PASTE_YOUR_CODE_HERE" /> -->
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -13,7 +32,9 @@
     <!-- UPLOADER SCREEN -->
     <section id="uploaderScreen" class="hero">
       <h1>Wimager</h1>
-      <p class="subtitle">Increase resolution with better resize + sharpening + contrast (client-side).</p>
+      <p class="subtitle">
+        Free image upscaler in your browser — Lanczos-3 resize, edge-aware sharpening, and contrast boost. No uploads.
+      </p>
 
       <div id="dropArea" class="dropArea" tabindex="0" role="button" aria-label="Select image or drop here">
         <input id="fileInput" type="file" accept="image/*" />

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wimager.netlify.app/sitemap.xml

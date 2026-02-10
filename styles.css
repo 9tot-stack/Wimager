@@ -81,6 +81,26 @@ body{
   font-size:14px;
 }
 
+/* SEO text block */
+.seoText{
+  width:min(720px, 92vw);
+  margin: 18px auto 0;
+  text-align:left;
+  color: var(--text);
+}
+.seoText h2{
+  margin: 10px 0 6px;
+  font-size: 18px;
+}
+.seoText p{
+  margin: 6px 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.seoSmall{
+  font-size: 12px;
+}
+
 /* Editor */
 .hidden{ display:none; }
 .editor{ margin-top: 10px; }
